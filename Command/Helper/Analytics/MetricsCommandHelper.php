@@ -6,7 +6,6 @@ use Kunstmaan\DashboardBundle\Entity\AnalyticsOverview;
 
 class MetricsCommandHelper extends AbstractAnalyticsCommandHelper
 {
-
     /**
      * get data and save it for the overview
      *
@@ -17,19 +16,13 @@ class MetricsCommandHelper extends AbstractAnalyticsCommandHelper
         $this->output->writeln("\t" . 'Fetching metrics..');
 
         $gaMetrics = 'ga:sessions, ga:users, ga:pageviews, ga:pageviewsPerSession, ga:avgSessionDuration';
-        if ($overview->getUseYear()) {
-            $results = $this->analyticsHelper->getResultsByDate(
-                date('Y-m-d', mktime(0, 0, 0, 1, 1, date('Y'))),
-                date('Y-m-d', mktime(0, 0, 0, 1, 1, date('Y', strtotime('+1 year')))),
-                $gaMetrics
-            );
-        } else {
-            $results = $this->analyticsHelper->getResults(
-                $overview->getTimespan(),
-                $overview->getStartOffset(),
-                $gaMetrics
-            );
-        }
+        $timestamps = $this->getTimestamps($overview);
+
+        $results = $this->query->getResultsByDate (
+            $timestamps['begin'],
+            $timestamps['end'],
+            $gaMetrics
+        );
 
         $rows = $results->getRows();
 
