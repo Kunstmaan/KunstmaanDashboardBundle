@@ -23,8 +23,8 @@
 @mixin single_transition($property, $duration, $ease){
     -webkit-transition: $property $duration $ease;
        -moz-transition: $property $duration $ease;
-         -o-transition: $property $duration $ease;
-            transition: $property $duration $ease;
+	 -o-transition: $property $duration $ease;
+	    transition: $property $duration $ease;
 }
 
 @mixin clearfix {
@@ -34,4 +34,3 @@
     clear:both;
   }
 }
-
